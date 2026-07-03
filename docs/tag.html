@@ -4,228 +4,57 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="布文的博客标签页">
-    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg">
+    <link rel="icon" href="assets/avatar.jpg">
     <title>标签 - 布文的博客</title>
     <script>
         const savedTheme = localStorage.getItem("site-theme") || "light";
         document.documentElement.dataset.theme = savedTheme;
     </script>
     <style>
-        :root {
-            color-scheme: light;
-            --text: #19222d;
-            --muted: #5f6b7a;
-            --soft: rgba(255, 255, 255, 0.74);
-            --softer: rgba(255, 255, 255, 0.46);
-            --border: rgba(255, 255, 255, 0.56);
-            --shadow: 0 24px 70px rgba(42, 55, 82, 0.20);
-        }
-
-        html[data-theme="dark"] {
-            color-scheme: dark;
-            --text: #eef4ff;
-            --muted: #b9c4d6;
-            --soft: rgba(18, 24, 38, 0.68);
-            --softer: rgba(18, 24, 38, 0.42);
-            --border: rgba(255, 255, 255, 0.16);
-            --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            min-width: 280px;
-            min-height: 100vh;
-            margin: 0;
-            color: var(--text);
-            font-family: Inter, "SF Pro Display", "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
-            line-height: 1.65;
-            background:
-                linear-gradient(120deg, rgba(238, 246, 255, 0.62), rgba(255, 248, 241, 0.40)),
-                url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2200&q=85") center / cover fixed;
-        }
-
-        html[data-theme="dark"] body {
-            background:
-                linear-gradient(120deg, rgba(5, 10, 22, 0.72), rgba(23, 29, 48, 0.58)),
-                url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2200&q=85") center / cover fixed;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .site-shell {
-            width: min(980px, calc(100% - 36px));
-            min-height: 100vh;
-            margin: 0 auto;
-            padding: 24px 0 34px;
-        }
-
-        .topbar,
-        .panel {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--soft);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 18px;
-            min-height: 64px;
-            padding: 12px 16px 12px 18px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 0;
-            font-weight: 800;
-        }
-
-        .brand-mark {
-            display: grid;
-            width: 38px;
-            height: 38px;
-            place-items: center;
-            border-radius: 8px;
-            color: #ffffff;
-            background: linear-gradient(135deg, #5271ff, #48c6ef);
-            font-weight: 900;
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .nav a,
-        .theme-toggle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 38px;
-            padding: 0 12px;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            color: var(--muted);
-            background: transparent;
-            font: inherit;
-            cursor: pointer;
-        }
-
-        .nav a:hover,
-        .theme-toggle:hover {
-            color: var(--text);
-            border-color: var(--border);
-            background: var(--softer);
-        }
-
-        .panel {
-            margin-top: 36px;
-            padding: clamp(28px, 6vw, 58px);
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(38px, 7vw, 72px);
-            line-height: 1;
-        }
-
-        p {
-            max-width: 640px;
-            margin: 18px 0 0;
-            color: var(--muted);
-            font-size: 18px;
-        }
-
-        .empty {
-            display: inline-flex;
-            align-items: center;
-            min-height: 42px;
-            margin-top: 28px;
-            padding: 0 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--softer);
-            color: var(--muted);
-            font-weight: 700;
-        }
-
-        footer {
-            margin-top: 24px;
-            color: rgba(255, 255, 255, 0.88);
-            text-shadow: 0 1px 12px rgba(0, 0, 0, 0.24);
-            font-size: 14px;
-        }
-
-        @media (max-width: 640px) {
-            .site-shell {
-                width: calc(100% - 18px);
-                padding-top: 14px;
-            }
-
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .nav {
-                justify-content: flex-start;
-            }
-        }
+        :root { color-scheme: light; --text:#19222d; --muted:#5f6b7a; --soft:rgba(255,255,255,.74); --softer:rgba(255,255,255,.46); --border:rgba(255,255,255,.56); --shadow:0 24px 70px rgba(42,55,82,.20); }
+        html[data-theme="dark"] { color-scheme: dark; --text:#eef4ff; --muted:#b9c4d6; --soft:rgba(18,24,38,.68); --softer:rgba(18,24,38,.42); --border:rgba(255,255,255,.16); --shadow:0 24px 70px rgba(0,0,0,.34); }
+        * { box-sizing:border-box; }
+        body { min-width:280px; min-height:100vh; margin:0; color:var(--text); font-family:Inter,"SF Pro Display","Segoe UI","Microsoft YaHei",Arial,sans-serif; line-height:1.65; background:linear-gradient(120deg,rgba(238,246,255,.62),rgba(255,248,241,.40)),url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2200&q=85") center/cover fixed; }
+        html[data-theme="dark"] body { background:linear-gradient(120deg,rgba(5,10,22,.72),rgba(23,29,48,.58)),url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2200&q=85") center/cover fixed; }
+        a { color:inherit; text-decoration:none; }
+        .site-shell { width:min(980px,calc(100% - 36px)); min-height:100vh; margin:0 auto; padding:24px 0 34px; }
+        .topbar,.panel { border:1px solid var(--border); border-radius:8px; background:var(--soft); box-shadow:var(--shadow); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+        .topbar { display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:64px; padding:12px 16px 12px 18px; }
+        .brand { display:flex; align-items:center; gap:12px; min-width:0; font-weight:800; }
+        .brand-mark { display:grid; width:38px; height:38px; place-items:center; border-radius:8px; color:#fff; background:linear-gradient(135deg,#5271ff,#48c6ef); font-weight:900; }
+        .nav { display:flex; align-items:center; justify-content:flex-end; gap:6px; flex-wrap:wrap; }
+        .nav a,.theme-toggle { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:0 12px; border:1px solid transparent; border-radius:8px; color:var(--muted); background:transparent; font:inherit; cursor:pointer; }
+        .nav a:hover,.theme-toggle:hover { color:var(--text); border-color:var(--border); background:var(--softer); }
+        .panel { margin-top:36px; padding:clamp(28px,6vw,58px); }
+        h1 { margin:0; font-size:clamp(38px,7vw,72px); line-height:1; }
+        p { max-width:640px; margin:18px 0 0; color:var(--muted); font-size:18px; }
+        .empty { display:inline-flex; align-items:center; min-height:42px; margin-top:28px; padding:0 14px; border:1px solid var(--border); border-radius:8px; background:var(--softer); color:var(--muted); font-weight:700; }
+        .tag-group { margin-top:30px; }
+        .tag-group h2 { margin:0 0 12px; }
+        .tag-group ul { display:grid; gap:10px; padding:0; list-style:none; }
+        .tag-group li { display:flex; justify-content:space-between; gap:16px; padding:14px 16px; border:1px solid var(--border); border-radius:8px; background:var(--softer); }
+        .tag-group span { color:var(--muted); font-size:14px; }
+        footer { margin-top:24px; color:rgba(255,255,255,.88); text-shadow:0 1px 12px rgba(0,0,0,.24); font-size:14px; }
+        @media (max-width:640px) { .site-shell { width:calc(100% - 18px); padding-top:14px; } .topbar { align-items:flex-start; flex-direction:column; } .nav { justify-content:flex-start; } .tag-group li { flex-direction:column; } }
     </style>
 </head>
 <body>
     <div class="site-shell">
         <header class="topbar">
-            <a class="brand" href="./" aria-label="返回首页">
-                <span class="brand-mark">B</span>
-                <span>布文的博客</span>
-            </a>
-            <nav class="nav" aria-label="站点导航">
-                <a href="./">主页</a>
-                <a href="rss.xml">RSS</a>
-                <a href="https://github.com/buwenjiayou" target="_blank" rel="noreferrer">GitHub</a>
-                <button class="theme-toggle" type="button" aria-label="切换明暗主题" onclick="toggleTheme()">☀</button>
-            </nav>
+            <a class="brand" href="./"><span class="brand-mark">B</span><span>布文的博客</span></a>
+            <nav class="nav"><a href="./">主页</a><a href="rss.xml">RSS</a><a href="https://github.com/buwenjiayou" target="_blank" rel="noreferrer">GitHub</a><button class="theme-toggle" type="button" aria-label="切换明暗主题" onclick="toggleTheme()">☀</button></nav>
         </header>
-
         <main class="panel">
             <h1>标签</h1>
             <p>暂时还没有发布文章，所以这里还没有标签。等后续内容上线后，标签会用于整理学习笔记、项目记录和研究方向。</p>
             <span class="empty">当前 0 个标签</span>
         </main>
-
         <footer>Copyright © <span id="copyrightYear"></span> 布文的博客</footer>
     </div>
-
     <script>
         const toggle = document.querySelector(".theme-toggle");
-
-        function syncThemeIcon() {
-            toggle.textContent = document.documentElement.dataset.theme === "dark" ? "☾" : "☀";
-        }
-
-        function toggleTheme() {
-            const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-            document.documentElement.dataset.theme = nextTheme;
-            localStorage.setItem("site-theme", nextTheme);
-            syncThemeIcon();
-        }
-
+        function syncThemeIcon() { toggle.textContent = document.documentElement.dataset.theme === "dark" ? "☾" : "☀"; }
+        function toggleTheme() { const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = nextTheme; localStorage.setItem("site-theme", nextTheme); syncThemeIcon(); }
         document.getElementById("copyrightYear").textContent = new Date().getFullYear();
         syncThemeIcon();
     </script>
