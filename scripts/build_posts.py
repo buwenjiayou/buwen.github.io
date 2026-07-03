@@ -270,9 +270,17 @@ def page_shell(title: str, body: str, description: str = SITE_DESCRIPTION) -> st
             font-weight: 700;
             text-decoration: none;
             cursor: pointer;
+            transition: transform .16s ease, background .16s ease, color .16s ease, border-color .16s ease;
         }}
+        .like-button:hover {{ transform: translateY(-1px); }}
         .download-button {{ color: #fff; border-color: transparent; background: linear-gradient(135deg, #5271ff, #48c6ef); }}
         .like-button.is-liked {{ color: #fff; border-color: transparent; background: linear-gradient(135deg, #ff6b8b, #ff9a62); }}
+        .like-button.is-pulsing {{ animation: likePulse .34s ease; }}
+        @keyframes likePulse {{
+            0% {{ transform: scale(1); }}
+            45% {{ transform: scale(1.06); }}
+            100% {{ transform: scale(1); }}
+        }}
         .content {{ font-size: 17px; }}
         .content h2 {{ margin-top: 34px; }}
         .content h3 {{ margin-top: 28px; }}
@@ -333,22 +341,26 @@ def page_shell(title: str, body: str, description: str = SITE_DESCRIPTION) -> st
             if (!button) return;
             const slug = button.dataset.likeSlug;
             const key = `blog-like-${{slug}}`;
-            const countKey = `blog-like-count-${{slug}}`;
-            const baseCount = Number(localStorage.getItem(countKey) || "0");
             const liked = localStorage.getItem(key) === "1";
-            function render(count, active) {{
+            function render(active) {{
                 button.classList.toggle("is-liked", active);
-                button.textContent = `${{active ? "已点赞" : "点赞"}} · ${{count}}`;
+                button.setAttribute("aria-pressed", active ? "true" : "false");
+                button.textContent = active ? "已点亮" : "点亮这篇";
+                button.title = active ? "已保存在当前浏览器" : "只保存在当前浏览器";
             }}
-            render(baseCount, liked);
+            render(liked);
             button.addEventListener("click", () => {{
                 const currentLiked = localStorage.getItem(key) === "1";
-                const currentCount = Number(localStorage.getItem(countKey) || "0");
                 const nextLiked = !currentLiked;
-                const nextCount = Math.max(0, currentCount + (nextLiked ? 1 : -1));
-                localStorage.setItem(key, nextLiked ? "1" : "0");
-                localStorage.setItem(countKey, String(nextCount));
-                render(nextCount, nextLiked);
+                if (nextLiked) {{
+                    localStorage.setItem(key, "1");
+                }} else {{
+                    localStorage.removeItem(key);
+                }}
+                render(nextLiked);
+                button.classList.remove("is-pulsing");
+                void button.offsetWidth;
+                button.classList.add("is-pulsing");
             }});
         }}
         document.getElementById("copyrightYear").textContent = new Date().getFullYear();
@@ -362,7 +374,7 @@ def page_shell(title: str, body: str, description: str = SITE_DESCRIPTION) -> st
 
 def render_post(post: dict[str, object]) -> str:
     tags = "".join(f'<span class="tag">{html.escape(str(tag))}</span>' for tag in post["tags"])
-    actions = [f'<button class="like-button" type="button" data-like-slug="{html.escape(str(post["slug"]))}">点赞 · 0</button>']
+    actions = [f'<button class="like-button" type="button" data-like-slug="{html.escape(str(post["slug"]))}" aria-pressed="false" title="只保存在当前浏览器">点亮这篇</button>']
     if post.get("pdf"):
         actions.insert(
             0,
@@ -401,7 +413,7 @@ def render_index_posts(posts: list[dict[str, object]]) -> str:
         tags = "".join(f'<span class="tag-pill">{html.escape(str(tag))}</span>' for tag in post["tags"])
         description = html.escape(str(post["description"] or "点击阅读这篇文章。"))
         cards.append(
-            f"""                <a class="post-card" href="{html.escape(str(post["url"]))}">
+            f"""                <a class="post-card" href="{html.escape(str(post["url"]))}" data-like-card="{html.escape(str(post["slug"]))}">
                     <div class="post-meta">
                         <span>{html.escape(str(post["date"]))}</span>
                         {tags}
