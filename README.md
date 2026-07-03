@@ -5,8 +5,8 @@
 ## 网站入口
 
 - 个人主页：[https://blog.buwen.homes/](https://blog.buwen.homes/)
-- GitHub Pages 备用入口：[https://buwenjiayou.github.io/buwen.github.io/](https://buwenjiayou.github.io/buwen.github.io/)
-- 仓库地址：[https://github.com/buwenjiayou/buwen.github.io](https://github.com/buwenjiayou/buwen.github.io)
+- GitHub Pages 备用入口：[https://buwenjiayou.github.io/](https://buwenjiayou.github.io/)
+- 仓库地址：[https://github.com/buwenjiayou/buwenjiayou.github.io](https://github.com/buwenjiayou/buwenjiayou.github.io)
 
 ## 网站定位
 
