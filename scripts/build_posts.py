@@ -318,7 +318,7 @@ def page_shell(title: str, body: str, description: str = SITE_DESCRIPTION) -> st
             <nav class="nav">
                 <a href="../">主页</a>
                 <a href="../tag.html">标签</a>
-                <a href="../rss.xml">RSS</a>
+                <a href="../rss.html">RSS</a>
                 <button class="theme-toggle" type="button" aria-label="切换明暗主题" onclick="toggleTheme()">☀</button>
             </nav>
         </header>
@@ -510,7 +510,7 @@ def render_tag_page(posts: list[dict[str, object]]) -> str:
     <div class="site-shell">
         <header class="topbar">
             <a class="brand" href="./"><span>{SITE_TITLE}</span></a>
-            <nav class="nav"><a href="./">主页</a><a href="rss.xml">RSS</a><a href="https://github.com/buwenjiayou" target="_blank" rel="noreferrer">GitHub</a><button class="theme-toggle" type="button" aria-label="切换明暗主题" onclick="toggleTheme()">☀</button></nav>
+            <nav class="nav"><a href="./">主页</a><a href="rss.html">RSS</a><a href="https://github.com/buwenjiayou" target="_blank" rel="noreferrer">GitHub</a><button class="theme-toggle" type="button" aria-label="切换明暗主题" onclick="toggleTheme()">☀</button></nav>
         </header>
         <main class="panel">
             {content}
@@ -549,6 +549,276 @@ def write_post_list(posts: list[dict[str, object]]) -> None:
             label_colors.setdefault(str(tag), "#5271ff")
     data["labelColorDict"] = label_colors if posts else {}
     (DOCS_DIR / "postList.json").write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8", newline="\n")
+
+
+def render_rss_page() -> str:
+    feed_url = f"{SITE_URL}/rss.xml"
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{SITE_TITLE} RSS 订阅说明">
+    <link rel="icon" href="assets/avatar.jpg">
+    <link rel="alternate" type="application/rss+xml" title="{SITE_TITLE}" href="rss.xml">
+    <title>RSS 订阅 - {SITE_TITLE}</title>
+    <script>
+        const savedTheme = localStorage.getItem("site-theme") || "light";
+        document.documentElement.dataset.theme = savedTheme;
+    </script>
+    <style>
+        :root {{
+            color-scheme: light;
+            --text: #19222d;
+            --muted: #5f6b7a;
+            --soft: rgba(255, 255, 255, 0.76);
+            --softer: rgba(255, 255, 255, 0.48);
+            --border: rgba(255, 255, 255, 0.56);
+            --accent: #5271ff;
+            --shadow: 0 24px 70px rgba(42, 55, 82, 0.20);
+        }}
+        html[data-theme="dark"] {{
+            color-scheme: dark;
+            --text: #eef4ff;
+            --muted: #b9c4d6;
+            --soft: rgba(18, 24, 38, 0.70);
+            --softer: rgba(18, 24, 38, 0.44);
+            --border: rgba(255, 255, 255, 0.16);
+            --accent: #7aa2ff;
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+        }}
+        * {{ box-sizing: border-box; }}
+        body {{
+            min-width: 280px;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text);
+            font-family: Inter, "SF Pro Display", "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.7;
+            background:
+                linear-gradient(120deg, rgba(238, 246, 255, 0.62), rgba(255, 248, 241, 0.40)),
+                url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2200&q=85") center / cover fixed;
+        }}
+        html[data-theme="dark"] body {{
+            background:
+                linear-gradient(120deg, rgba(5, 10, 22, 0.72), rgba(23, 29, 48, 0.58)),
+                url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2200&q=85") center / cover fixed;
+        }}
+        a {{ color: inherit; text-decoration: none; }}
+        .site-shell {{
+            width: min(980px, calc(100% - 36px));
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 24px 0 34px;
+        }}
+        .topbar, .panel {{
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--soft);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }}
+        .topbar {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            min-height: 64px;
+            padding: 12px 16px 12px 18px;
+        }}
+        .brand {{ display: flex; align-items: center; gap: 12px; min-width: 0; font-weight: 800; }}
+        .nav {{ display: flex; align-items: center; justify-content: flex-end; gap: 6px; flex-wrap: wrap; }}
+        .nav a, .theme-toggle {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 38px;
+            padding: 0 12px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: var(--muted);
+            background: transparent;
+            font: inherit;
+            cursor: pointer;
+        }}
+        .nav a:hover, .theme-toggle:hover {{ color: var(--text); border-color: var(--border); background: var(--softer); }}
+        .panel {{
+            margin-top: 36px;
+            padding: clamp(28px, 6vw, 58px);
+        }}
+        .eyebrow {{
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--softer);
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 800;
+        }}
+        h1 {{
+            max-width: 720px;
+            margin: 18px 0 0;
+            font-size: clamp(38px, 7vw, 72px);
+            line-height: 1.02;
+        }}
+        .intro {{
+            max-width: 680px;
+            margin: 20px 0 0;
+            color: var(--muted);
+            font-size: 18px;
+        }}
+        .feed-box {{
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            gap: 10px;
+            align-items: center;
+            margin-top: 34px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--softer);
+        }}
+        .feed-url {{
+            min-width: 0;
+            overflow: auto;
+            white-space: nowrap;
+            padding: 0 4px;
+            color: var(--text);
+            font-family: "SFMono-Regular", Consolas, monospace;
+            font-size: 14px;
+        }}
+        .button {{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--soft);
+            color: var(--text);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }}
+        .button.primary {{
+            border-color: transparent;
+            color: #fff;
+            background: linear-gradient(135deg, #5271ff, #48c6ef);
+        }}
+        .button:hover {{ transform: translateY(-1px); }}
+        .reader-list {{
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin: 30px 0 0;
+            padding: 0;
+            list-style: none;
+        }}
+        .reader-list a {{
+            display: flex;
+            align-items: center;
+            min-height: 48px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--softer);
+            font-weight: 800;
+        }}
+        .reader-list a:hover {{ color: var(--accent); border-color: rgba(82, 113, 255, 0.45); }}
+        .note {{
+            max-width: 720px;
+            margin: 28px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+        }}
+        footer {{ margin-top: 24px; color: rgba(255,255,255,.88); text-shadow: 0 1px 12px rgba(0,0,0,.24); font-size: 14px; }}
+        @media (max-width: 760px) {{
+            .feed-box {{ grid-template-columns: 1fr; }}
+            .reader-list {{ grid-template-columns: 1fr; }}
+        }}
+        @media (max-width: 640px) {{
+            .site-shell {{ width: calc(100% - 18px); padding-top: 14px; }}
+            .topbar {{ align-items: flex-start; flex-direction: column; }}
+            .nav {{ justify-content: flex-start; }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="site-shell">
+        <header class="topbar">
+            <a class="brand" href="./"><span>{SITE_TITLE}</span></a>
+            <nav class="nav"><a href="./">主页</a><a href="tag.html">标签</a><a href="https://github.com/buwenjiayou" target="_blank" rel="noreferrer">GitHub</a><button class="theme-toggle" type="button" aria-label="切换明暗主题" onclick="toggleTheme()">☀</button></nav>
+        </header>
+        <main class="panel">
+            <span class="eyebrow">RSS 订阅</span>
+            <h1>把新文章交给阅读器</h1>
+            <p class="intro">复制下面的订阅地址，添加到你常用的 RSS 阅读器。浏览器直接打开源文件时看到 XML 是正常现象，阅读器会自动解析成文章列表。</p>
+            <div class="feed-box">
+                <code class="feed-url" id="feedUrl">{feed_url}</code>
+                <button class="button primary" type="button" id="copyButton">复制地址</button>
+                <a class="button" href="rss.xml">打开源文件</a>
+            </div>
+            <ul class="reader-list" aria-label="常用 RSS 阅读器">
+                <li><a href="https://www.inoreader.com/" target="_blank" rel="noreferrer">Inoreader</a></li>
+                <li><a href="https://feedly.com/" target="_blank" rel="noreferrer">Feedly</a></li>
+                <li><a href="https://hyliu.me/fluent-reader/" target="_blank" rel="noreferrer">Fluent Reader</a></li>
+            </ul>
+            <p class="note">RSS 源文件仍保留在 <code>rss.xml</code>，用于标准订阅；这个页面只是给直接点击 RSS 的访客一个更清楚的入口。</p>
+        </main>
+        <footer>Copyright © <span id="copyrightYear"></span> {SITE_TITLE}</footer>
+    </div>
+    <script>
+        const toggle = document.querySelector(".theme-toggle");
+        function syncThemeIcon() {{
+            toggle.textContent = document.documentElement.dataset.theme === "dark" ? "☾" : "☀";
+        }}
+        function toggleTheme() {{
+            const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+            document.documentElement.dataset.theme = nextTheme;
+            localStorage.setItem("site-theme", nextTheme);
+            syncThemeIcon();
+        }}
+        function fallbackCopy(text) {{
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.left = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            textarea.remove();
+        }}
+        function setupCopyButton() {{
+            const button = document.getElementById("copyButton");
+            const feedUrl = document.getElementById("feedUrl").textContent.trim();
+            button.addEventListener("click", async () => {{
+                try {{
+                    if (navigator.clipboard && window.isSecureContext) {{
+                        await navigator.clipboard.writeText(feedUrl);
+                    }} else {{
+                        fallbackCopy(feedUrl);
+                    }}
+                    button.textContent = "已复制";
+                    window.setTimeout(() => button.textContent = "复制地址", 1600);
+                }} catch (error) {{
+                    button.textContent = "手动复制";
+                    window.setTimeout(() => button.textContent = "复制地址", 1600);
+                }}
+            }});
+        }}
+        document.getElementById("copyrightYear").textContent = new Date().getFullYear();
+        syncThemeIcon();
+        setupCopyButton();
+    </script>
+</body>
+</html>
+"""
 
 
 def write_rss(posts: list[dict[str, object]]) -> None:
@@ -595,6 +865,7 @@ def main() -> None:
         (POST_DIR / f"{post['slug']}.html").write_text(render_post(post), encoding="utf-8", newline="\n")
     update_index(posts)
     (DOCS_DIR / "tag.html").write_text(render_tag_page(posts), encoding="utf-8", newline="\n")
+    (DOCS_DIR / "rss.html").write_text(render_rss_page(), encoding="utf-8", newline="\n")
     write_post_list(posts)
     write_rss(posts)
     print(f"Generated {len(posts)} post(s).")
